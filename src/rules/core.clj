@@ -1,5 +1,6 @@
 (ns rules.core
-  (:require [clara.rules :refer :all]))
+  (:require [clara.rules :refer :all]
+            [clara.tools.inspect :as inspect]))
 
 ;; https://en.wikipedia.org/wiki/Body_mass_index#Categories
 (defn calculate-bmi
@@ -72,7 +73,14 @@
 
 (def session (mk-session 'rules.core))
 
+(def inspected-session
+  (-> (mk-session 'rules.core :cache false)
+      (insert (->Patient "Tim" 190 1.55 :male)
+              (->Patient "Tina" 56 1.60 :female))
+      (fire-rules)))
+
 (comment
+  (map calculate-bmi patients)
 
   (-> session
       (insert-all patients)
@@ -81,6 +89,6 @@
       (query get-underweights)
       )
 
-  (map calculate-bmi patients)
-
+  ;; see repl
+  (inspect/explain-activations inspected-session)
   )
