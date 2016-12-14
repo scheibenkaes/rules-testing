@@ -24,7 +24,8 @@
    (map->Patient {:id "Denise" :weight 55 :height 1.65 :gender :female})
    (map->Patient {:id "Edwin" :weight 82 :height 2.01 :gender :male})
    (map->Patient {:id "Franz" :weight 182 :height 1.77 :gender :male})
-   (map->Patient {:id "Iggy" :weight 42 :height 1.61 :gender :male})])
+   (map->Patient {:id "Iggy" :weight 42 :height 1.61 :gender :male})
+   (map->Patient {:id "Madonna" :weight 42 :height 1.71 :gender :female})])
 
 (defrule bmi-rule
   [Patient [{id :id :as patient}]
@@ -91,4 +92,7 @@
 
   ;; see repl
   (inspect/explain-activations inspected-session)
+
+  ;; what's next?
+
   )
