@@ -56,6 +56,9 @@
 (defquery total []
   [?total <- Total])
 
+(defquery average []
+  [?avg <- (acc/average :price) :from [Purchase]])
+
 (def session2 (mk-session 'rules.next))
 
 (comment
@@ -70,6 +73,12 @@
       (insert-all purchases)
       (fire-rules)
       (query total)
+      )
+
+  (-> session2
+      (insert-all purchases)
+      (fire-rules)
+      (query average)
       )
 
     (-> session2
