@@ -23,6 +23,7 @@
    (= ?gender gender)
    (= gender :female)]
   =>
+  ;; do stuff if rule matches
   (println "Promo for " ?id))
 
 (def session2 (mk-session 'rules.next))
@@ -35,3 +36,12 @@
      (query tall-people)
      )
  )
+
+;;; what's it all about?
+;;
+
+;; use it with Java http://www.clara-rules.org/docs/java/
+;;
+;; use other libs in your language
+;; Java http://www.drools.org/
+;; JavaScript https://github.com/C2FO/nools (deprecated)
