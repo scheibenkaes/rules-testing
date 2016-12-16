@@ -5,6 +5,7 @@
             [clj-time.core :as joda])
   (:import [rules.core Patient]))
 
+;; extend facts & rules
 (defrecord Tall [id])
 
 (defrule tall-rule
@@ -19,6 +20,8 @@
   []
   [?tall <- Tall])
 
+
+;; take actions in matching rules
 (defrule tall-women-receive-a-promo-code
   [Tall (= ?id id)]
   [Patient (= ?id id)
@@ -26,6 +29,7 @@
    (= gender :female)]
   =>
   ;; do stuff if rule matches
+  ;; send mails, give medical advice, ...
   (println "Promo for " ?id))
 
 (defrecord Purchase [id date price])
