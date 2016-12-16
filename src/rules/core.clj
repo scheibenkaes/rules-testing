@@ -62,13 +62,13 @@
 
 (defquery overweight-persons
   [:?gender]
-  [Patient (= ?id id) (= ?gender gender)]
-  [Overweight (= ?id id)])
+  [Overweight (= ?id id)]
+  [Patient (= ?id id) (= ?gender gender)])
 
 (defquery underweight-persons
   [:?gender]
-  [Patient (= ?id id) (= ?gender gender)]
-  [Underweight (= ?id id)])
+  [Underweight (= ?id id)]
+  [Patient (= ?id id) (= ?gender gender)])
 
 (def session (mk-session 'rules.core))
 
@@ -84,10 +84,9 @@
   (-> session
       (insert-all patients)
       (fire-rules)
+      (query overweight-persons :?gender :female)
       #_(query underweight-persons :?gender :male)
-      (query get-underweights)
-
-
+      #_(query get-underweights)
       )
 
   ;; see repl
