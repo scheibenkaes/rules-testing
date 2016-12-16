@@ -1,22 +1,11 @@
 (ns rules.core
   (:require [clara.rules :refer :all]
-            [clara.tools.inspect :as inspect]))
+            [clara.tools.inspect :as inspect]
+            [rules.bmi :as bmidx]))
 
-;; https://en.wikipedia.org/wiki/Body_mass_index
-(defn calculate-bmi
-  "Calculate the body mass index for the patient given."
-  [{weight-kg :weight height-m :height}]
-  {:pre [(pos? height-m)]}
-  (/ weight-kg
-     (Math/pow height-m 2)))
-
+;; Data
 (defrecord Patient [id weight height gender])
 
-(defrecord Overweight [id])
-
-(defrecord Underweight [id])
-
-(defrecord BMI [id bmi])
 
 (def patients
   [(map->Patient {:id "Bob" :weight 90 :height 1.75 :gender :male})
@@ -28,10 +17,18 @@
    (map->Patient {:id "Iggy" :weight 42 :height 1.61 :gender :male})
    (map->Patient {:id "Madonna" :weight 42 :height 1.71 :gender :female})])
 
+;; Facts
+(defrecord Overweight [id])
+
+(defrecord Underweight [id])
+
+(defrecord BMI [id bmi])
+
+;; Rulez
 (defrule bmi-rule
   [Patient [{id :id :as patient}]
    (= ?id id)
-   (= ?bmi (calculate-bmi patient))]
+   (= ?bmi (bmidx/calculate-bmi patient))]
   =>
   (insert! (->BMI ?id ?bmi)))
 
@@ -82,7 +79,7 @@
       (fire-rules)))
 
 (comment
-  (map calculate-bmi patients)
+  (map bmidx/calculate-bmi patients)
 
   (-> session
       (insert-all patients)
